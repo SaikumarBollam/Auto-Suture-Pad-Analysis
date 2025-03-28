@@ -1,0 +1,218 @@
+openapi: 3.0.3
+info:
+  title: Suture Analysis API
+  description: API specification for YOLO-based suture analysis, measurement, and validation.
+  version: 1.0.0
+servers:
+  - url: https://api.yolosuture.com/v1
+
+paths:
+
+  /predict_suture_quality:
+    post:
+      summary: Predict quality of sutures.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  description: Base64-encoded image.
+                  example: "<base64_image>"
+      responses:
+        "200":
+          description: Successful quality prediction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  prediction:
+                    type: string
+                    enum: ["good", "bad", "suture_tight", "suture_loose"]
+                  confidence:
+                    type: number
+                    format: float
+                  bounding_boxes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        confidence:
+                          type: number
+                        coordinates:
+                          type: object
+                          properties:
+                            x_min: { type: integer }
+                            y_min: { type: integer }
+                            x_max: { type: integer }
+                            y_max: { type: integer }
+        "400":
+          description: Invalid request format or image encoding error.
+        "413":
+          description: Image too large.
+        "500":
+          description: Internal Server Error during prediction.
+
+  /stitch_measurement:
+    post:
+      summary: Calculate stitch length.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+      responses:
+        "200":
+          description: Stitch measurement successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stitch_lengths_mm:
+                    type: array
+                    items:
+                      type: number
+                  average_length_mm:
+                    type: number
+        "400":
+          description: Invalid request or scale detection failed.
+        "500":
+          description: Error calculating stitch length.
+
+  /stitch_angle:
+    post:
+      summary: Calculate angle of stitches.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+      responses:
+        "200":
+          description: Angle calculation successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  angles_degrees:
+                    type: array
+                    items:
+                      type: number
+                  average_angle:
+                    type: number
+        "400":
+          description: Unable to detect bounding box orientation.
+        "500":
+          description: Error calculating stitch angle.
+
+  /tail_length:
+    post:
+      summary: Calculate tail lengths of sutures.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+      responses:
+        "200":
+          description: Tail length calculation successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tail_lengths_mm:
+                    type: array
+                    items:
+                      type: number
+                  missing_tail_count:
+                    type: integer
+        "400":
+          description: Tail detection failed or unclear.
+        "500":
+          description: Error calculating tail lengths.
+
+  /suture_distance:
+    post:
+      summary: Calculate distance between sutures.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                scale_px_to_mm:
+                  type: number
+                  description: Pixel-to-mm conversion scale.
+      responses:
+        "200":
+          description: Distance calculation successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  suture_distances_mm:
+                    type: array
+                    items:
+                      type: number
+                  average_distance_mm:
+                    type: number
+        "400":
+          description: Missing or invalid scale.
+        "500":
+          description: Error calculating suture distances.
+
+  /knot_incision_distance:
+    post:
+      summary: Calculate distance from knot to incision.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+      responses:
+        "200":
+          description: Knot-to-incision distance successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  distances_mm:
+                    type: array
+                    items:
+                      type: number
+                  average_distance_mm:
+                    type: number
+        "400":
+          description: Incision line detection failed.
+        "500":
+          description: Error calculating knot-to-incision distances.

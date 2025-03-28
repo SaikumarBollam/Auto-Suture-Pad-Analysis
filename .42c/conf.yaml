@@ -1,0 +1,4 @@
+audit:
+  enabled: true
+  rulesets:
+    - default
