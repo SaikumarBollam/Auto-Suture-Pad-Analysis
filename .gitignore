@@ -1,1 +1,71 @@
-"*.log" 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Logs
+logs/
+*.log
+
+# Data
+data/
+weights/
+mlruns/
+
+# Docker
+.docker/
+
+# MinIO
+.minio.sys/
+
+# Redis
+dump.rdb
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Project specific
+config/api/.env
+config/ml/.env
+config/deployment/.env 
