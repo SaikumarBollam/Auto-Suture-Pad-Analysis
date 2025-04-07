@@ -1,20 +1,62 @@
 # Suture Analysis ML Models
 
-A comprehensive machine learning pipeline for suture analysis, including preprocessing, model training, evaluation, and inference.
+A comprehensive machine learning pipeline for suture analysis, following CRISP-DM, MLOps, and ISO/IEC 23053 standards.
+
+## Standards Compliance
+
+### CRISP-DM
+- Business Understanding: `docs/business/`
+- Data Understanding: `docs/data/`
+- Data Preparation: `preprocessing/`
+- Modeling: `models/` and `training/`
+- Evaluation: `evaluation/`
+- Deployment: `deployment/`
+
+### MLOps
+- CI/CD: `.github/workflows/`
+- Model Registry: `registry/`
+- Monitoring: `monitoring/`
+- Experiment Tracking: `experiments/`
+- Data Versioning: `data/`
+
+### ISO/IEC 23053
+- Requirements: `docs/requirements/`
+- Risk Assessment: `docs/risk/`
+- Quality Assurance: `qa/`
+- Validation: `validation/`
+- Maintenance: `maintenance/`
 
 ## Project Structure
 
 ```
 ml-models/
-├── preprocessing/     # Image preprocessing and feature extraction
-├── models/           # Model definitions and architectures
-├── training/         # Training pipeline and hyperparameter tuning
-├── evaluation/       # Model evaluation and metrics
-├── inference/        # Inference pipeline and visualization
-├── utils/            # Utility functions and performance optimization
-├── config.py         # Configuration management
-├── requirements.txt  # Project dependencies
-└── README.md         # This file
+├── .github/
+│   └── workflows/           # CI/CD pipelines
+├── data/
+│   ├── raw/                # Raw data
+│   ├── processed/          # Processed data
+│   └── versioned/          # Versioned datasets
+├── docs/
+│   ├── business/           # Business understanding
+│   ├── data/              # Data documentation
+│   ├── requirements/       # Requirements specification
+│   └── risk/              # Risk assessment
+├── preprocessing/          # Data preprocessing
+├── models/                # Model definitions
+├── training/              # Training pipeline
+├── evaluation/            # Model evaluation
+├── inference/             # Inference pipeline
+├── deployment/            # Deployment configuration
+├── monitoring/            # Model monitoring
+├── registry/              # Model registry
+├── experiments/           # Experiment tracking
+├── qa/                    # Quality assurance
+├── validation/            # Validation procedures
+├── maintenance/           # Maintenance procedures
+├── utils/                 # Utility functions
+├── config.py              # Configuration management
+├── requirements.txt       # Project dependencies
+└── README.md              # This file
 ```
 
 ## Layer Documentation
@@ -24,6 +66,13 @@ ml-models/
 - [Training Layer](training/README.md)
 - [Evaluation Layer](evaluation/README.md)
 - [Inference Layer](inference/README.md)
+- [Deployment Layer](deployment/README.md)
+- [Monitoring Layer](monitoring/README.md)
+- [Registry Layer](registry/README.md)
+- [Experiments Layer](experiments/README.md)
+- [QA Layer](qa/README.md)
+- [Validation Layer](validation/README.md)
+- [Maintenance Layer](maintenance/README.md)
 - [Utilities Layer](utils/README.md)
 
 ## Installation
