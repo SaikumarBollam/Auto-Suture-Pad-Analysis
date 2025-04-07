@@ -1,0 +1,28 @@
+# Core dependencies
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.0.0  # For YOLOv12
+numpy>=1.19.0
+opencv-python>=4.5.0
+scipy>=1.6.0
+scikit-image>=0.18.0
+scikit-learn>=0.24.0
+matplotlib>=3.3.0
+pandas>=1.2.0
+tqdm>=4.60.0
+pillow>=8.0.0
+albumentations>=1.0.0
+seaborn>=0.11.0
+plotly>=5.0.0
+
+# Additional dependencies for YOLOv12
+pyyaml>=5.3.1
+requests>=2.23.0
+thop>=0.1.1  # For FLOPs computation
+pycocotools>=2.0.0  # For COCO evaluation
+
+# Optional dependencies
+tensorboard>=2.4.1  # For visualization
+wandb>=0.12.0  # For experiment tracking
+onnx>=1.10.0  # For model export
+onnxruntime>=1.8.0  # For ONNX inference
