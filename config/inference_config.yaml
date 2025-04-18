@@ -1,0 +1,80 @@
+# Model configuration
+model:
+  architecture: "resnet50"
+  weights_path: "weights/best_model.pt"
+  device: "cuda"  # or "cpu"
+  half_precision: true
+
+# Inference configuration
+inference:
+  batch_size: 1
+  max_workers: 4
+  cache_size: 100
+  confidence_threshold: 0.5
+  iou_threshold: 0.5
+  max_detections: 100
+
+# Scale detection configuration
+scale_detection:
+  min_length: 10  # pixels
+  max_length: 100  # pixels
+  scale_length: 10  # mm
+  detection_method: "hough"  # or "template" or "edges"
+
+# Measurement configuration
+measurements:
+  standards:
+    incision_line_to_end_of_stitch:
+      mean: 4.0
+      std: 1.0
+    incision_line_to_beginning_of_knot:
+      mean: 4.0
+      std: 1.0
+    tail_1:
+      mean: 6.0
+      std: 3.0
+    tail_2:
+      mean: 6.0
+      std: 3.0
+    incision_line_to_middle_of_knot:
+      mean: 4.0
+      std: 1.0
+    stitch_incision_line_angle:
+      mean: 90.0
+      std: 10.0
+    distance_between_stitches_left:
+      mean: 4.0
+      std: 1.0
+    distance_between_stitches_right:
+      mean: 4.0
+      std: 1.0
+
+# Quality assessment configuration
+quality:
+  thresholds:
+    tight:
+      min_angle: 80
+      max_angle: 100
+      min_distance: 3.0
+      max_distance: 5.0
+    loose:
+      min_angle: 60
+      max_angle: 120
+      min_distance: 2.0
+      max_distance: 6.0
+
+# Performance monitoring
+monitoring:
+  metrics:
+    - "inference_time"
+    - "batch_size"
+    - "images_per_second"
+    - "memory_usage"
+  log_interval: 100  # inferences
+
+# MLflow configuration
+mlflow:
+  tracking_uri: "http://localhost:5000"
+  registry_uri: "http://localhost:5000"
+  model_name: "suture_detection"
+  version: "latest"  # or specific version number 

@@ -1,0 +1,56 @@
+# File reading configuration
+file_reading:
+  # Supported image formats
+  image_formats:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".bmp"
+    - ".tiff"
+  
+  # Supported annotation formats
+  annotation_formats:
+    - ".txt"  # YOLO format
+    - ".xml"  # Pascal VOC format
+    - ".json" # COCO format
+  
+  # File encoding settings
+  encoding:
+    text: "utf-8"
+    binary: "rb"
+  
+  # File reading modes
+  modes:
+    image: "RGB"  # or "BGR", "GRAY"
+    annotation: "relative"  # or "absolute" for coordinates
+
+# Data validation settings
+validation:
+  check_file_existence: true
+  verify_image_integrity: true
+  verify_annotation_integrity: true
+  max_image_size: [1920, 1080]  # width, height
+  min_image_size: [32, 32]      # width, height
+  allowed_aspect_ratio: [0.5, 2.0]  # min, max
+
+# Error handling
+error_handling:
+  skip_invalid_files: true
+  log_errors: true
+  error_log_file: "read_errors.log"
+  max_retries: 3
+  retry_delay: 1  # seconds
+
+# Caching settings
+caching:
+  enable_cache: true
+  cache_dir: "cache"
+  max_cache_size: 1024  # MB
+  cache_expiry: 3600  # seconds
+
+# Parallel processing
+parallel:
+  enabled: true
+  num_workers: 4
+  chunk_size: 100  # number of files to process in one chunk
+  max_queue_size: 1000 

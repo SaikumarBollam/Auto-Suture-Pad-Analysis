@@ -1,0 +1,100 @@
+# Deployment Configuration
+deployment:
+  environment: "development"  # development, staging, production
+  version: "1.0.0"
+  region: "us-west-2"
+  availability_zones: ["us-west-2a", "us-west-2b", "us-west-2c"]
+
+# Kubernetes Configuration
+kubernetes:
+  namespace: "suture-analysis"
+  replicas: 3
+  resources:
+    limits:
+      cpu: "2"
+      memory: "4Gi"
+    requests:
+      cpu: "1"
+      memory: "2Gi"
+  autoscaling:
+    enabled: true
+    min_replicas: 3
+    max_replicas: 10
+    target_cpu_utilization: 80
+
+# Database Configuration
+database:
+  host: "postgres"
+  port: 5432
+  name: "suture_analysis"
+  user: "postgres"
+  password: ""  # Set in production
+  pool_size: 20
+  max_overflow: 10
+
+# Redis Configuration
+redis:
+  host: "redis"
+  port: 6379
+  db: 0
+  password: ""  # Set in production
+  max_connections: 20
+
+# MLflow Configuration
+mlflow:
+  tracking_uri: "http://mlflow:5000"
+  artifact_store: "s3://mlflow"
+  registry_uri: "sqlite:///mlruns/mlflow.db"
+
+# MinIO Configuration
+minio:
+  endpoint: "http://minio:9000"
+  access_key: "minioadmin"
+  secret_key: "minioadmin"
+  secure: false
+  bucket_name: "suture-analysis"
+
+# Monitoring Configuration
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+  grafana:
+    enabled: true
+    port: 3000
+  alertmanager:
+    enabled: true
+    port: 9093
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  retention_days: 30
+  max_size: "100MB"
+  backup_count: 10
+
+# Security Configuration
+security:
+  ssl:
+    enabled: false
+    cert_path: "/etc/ssl/certs/cert.pem"
+    key_path: "/etc/ssl/private/key.pem"
+  cors:
+    origins: ["*"]
+    methods: ["*"]
+    headers: ["*"]
+  rate_limit:
+    enabled: true
+    requests_per_minute: 60
+    burst: 10
+
+# Backup Configuration
+backup:
+  enabled: true
+  schedule: "0 0 * * *"  # Daily at midnight
+  retention_days: 30
+  storage:
+    type: "s3"
+    bucket: "suture-analysis-backups"
+    path: "backups/" 

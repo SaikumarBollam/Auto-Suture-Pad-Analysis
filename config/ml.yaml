@@ -1,0 +1,29 @@
+training:
+  batch_size: 32
+  epochs: 100
+  learning_rate: 0.001
+  validation_split: 0.2
+  early_stopping_patience: 10
+
+model:
+  architecture: "resnet50"
+  input_size: [224, 224]
+  num_classes: 2
+  pretrained: true
+
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  train_dir: "data/processed/train"
+  val_dir: "data/processed/val"
+  test_dir: "data/processed/test"
+
+inference:
+  batch_size: 1
+  confidence_threshold: 0.5
+  device: "cuda"
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/ml.log" 

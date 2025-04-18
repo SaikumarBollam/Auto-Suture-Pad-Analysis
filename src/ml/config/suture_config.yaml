@@ -1,0 +1,32 @@
+# Suture detection specific model configuration
+model:
+  size: "l"
+  anchors: [[10, 13], [16, 30], [33, 23], [30, 61], [62, 45], [59, 119], [116, 90], [156, 198], [373, 326]]
+  backbone: "darknet53"
+
+# Suture detection specific data configuration
+data:
+  class_names:
+    - "suture"
+  class_ids:
+    suture: 0
+  format: "yolo"
+
+# Environment-specific overrides
+dev:
+  model:
+    size: "s"  # Smaller model for development
+  data:
+    format: "yolo"
+
+prod:
+  model:
+    size: "l"  # Larger model for production
+  data:
+    format: "yolo"
+
+test:
+  model:
+    size: "n"  # Smallest model for testing
+  data:
+    format: "yolo" 

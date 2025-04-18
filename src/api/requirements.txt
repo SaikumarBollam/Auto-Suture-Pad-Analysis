@@ -1,0 +1,28 @@
+# Dependencies for the backend
+
+# API-specific dependencies
+python-jose
+passlib
+bcrypt
+fastapi-limiter
+aiofiles
+
+# Security
+python-jose[cryptography]
+passlib[bcrypt]
+
+# Rate limiting and caching
+fastapi-limiter
+redis[hiredis]
+
+# File handling
+python-multipart
+
+# Minimal ML dependencies for API
+Pillow
+opencv-python-headless
+numpy
+
+torch
+torchvision
+tensorboard 

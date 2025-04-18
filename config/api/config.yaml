@@ -1,0 +1,71 @@
+# API Configuration
+api:
+  title: "Suture Analysis API"
+  description: "API for analyzing surgical sutures using computer vision"
+  version: "1.0.0"
+  debug: false
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  timeout: 120
+  cors:
+    origins: ["*"]
+    methods: ["*"]
+    headers: ["*"]
+
+# Authentication
+auth:
+  secret_key: "your-secret-key-here"  # Change in production
+  algorithm: "HS256"
+  access_token_expire_minutes: 30
+  refresh_token_expire_days: 7
+
+# ML Service Integration
+ml_service:
+  host: "ml"
+  port: 8888
+  timeout: 60
+  retry_attempts: 3
+  retry_delay: 1
+
+# Redis Configuration
+redis:
+  host: "redis"
+  port: 6379
+  db: 0
+  password: ""  # Set in production
+  max_connections: 10
+
+# MLflow Configuration
+mlflow:
+  tracking_uri: "http://mlflow:5000"
+  experiment_name: "suture_analysis"
+  artifact_store: "s3://mlflow"
+
+# MinIO Configuration
+minio:
+  endpoint: "http://minio:9000"
+  access_key: "minioadmin"
+  secret_key: "minioadmin"
+  secure: false
+  bucket_name: "suture-analysis"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/api.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+
+# Rate Limiting
+rate_limit:
+  enabled: true
+  requests_per_minute: 60
+  burst: 10
+
+# Health Check
+health_check:
+  interval: 30
+  timeout: 5
+  retries: 3 

@@ -1,0 +1,62 @@
+# Model configuration
+model:
+  name: "yolo"  # or other model types
+  type: "yolo"
+  size: "l"  # Added from Python config
+  input_size: [640, 640]  # width, height
+  num_classes: 2  # Updated from Python config
+  anchors: [[10, 13], [16, 30], [33, 23], [30, 61], [62, 45], [59, 119], [116, 90], [156, 198], [373, 326]]
+  backbone: "darknet53"
+  pretrained: true
+  device: "cuda"  # Added from Python config
+
+# Training parameters
+training:
+  batch_size: 16
+  num_epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0005
+  momentum: 0.9  # Added from Python config
+  validation_split: 0.2  # Added from Python config
+  device: "cuda"  # or "cpu"
+  num_workers: 4
+  pin_memory: true
+
+# Data parameters
+data:
+  train_path: "data/train"
+  val_path: "data/val"
+  test_path: "data/test"
+  image_size: [640, 640]
+  augment: true
+  normalize: true
+  cache_images: false  # Added from Python config
+
+# Output directories
+output:
+  weights_dir: "weights"
+  output_dir: "outputs"
+  log_dir: "logs"
+  checkpoint_dir: "checkpoints"  # Added from Python config
+
+# Environment-specific overrides
+dev:
+  model:
+    device: "cpu"  # Use CPU for development
+  training:
+    batch_size: 8  # Smaller batch size for development
+    num_epochs: 10  # Fewer epochs for development
+
+prod:
+  model:
+    device: "cuda"  # Use GPU for production
+  training:
+    batch_size: 16
+    num_epochs: 100
+
+test:
+  model:
+    device: "cpu"  # Use CPU for testing
+  training:
+    batch_size: 4  # Smallest batch size for testing
+    num_epochs: 5  # Fewest epochs for testing 

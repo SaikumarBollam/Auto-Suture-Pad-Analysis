@@ -1,0 +1,37 @@
+# Core dependencies
+numpy
+Pillow
+opencv-python-headless
+python-dotenv
+
+# ML Framework
+torch
+torchvision
+
+# API Framework
+fastapi
+uvicorn
+python-multipart
+pydantic
+pydantic-settings
+
+# Storage and Caching
+redis
+minio
+
+# ML Tracking
+mlflow
+tensorboard
+
+# Development and testing
+pytest
+pytest-cov
+black
+flake8
+
+# Documentation
+mkdocs
+mkdocs-material
+
+# Utilities
+tqdm 

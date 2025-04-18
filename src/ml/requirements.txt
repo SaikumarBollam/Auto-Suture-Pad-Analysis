@@ -1,0 +1,21 @@
+# Core ML dependencies
+torch
+torchvision
+ultralytics  # For YOLO models
+numpy
+opencv-python-headless
+scipy
+Pillow
+
+# Model evaluation and export
+pycocotools  # For COCO evaluation
+onnx  # For model export
+onnxruntime  # For ONNX inference
+
+# Optional dependencies (comment out if not needed)
+scikit-image  # For advanced image processing
+scikit-learn  # For classification/regression
+matplotlib  # For visualization
+pandas  # For data handling
+albumentations  # For data augmentation
+# tensorboard  # For visualization

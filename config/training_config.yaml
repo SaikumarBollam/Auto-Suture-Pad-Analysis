@@ -1,0 +1,62 @@
+# Model configuration
+model:
+  architecture: "resnet50"
+  pretrained: true
+  num_classes: 8
+  input_size: [512, 512]
+  dropout: 0.2
+
+# Training configuration
+training:
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  epochs: 100
+  early_stopping:
+    patience: 10
+    min_delta: 0.001
+  device: "cuda"  # or "cpu"
+  num_workers: 4
+  pin_memory: true
+
+# Data configuration
+data:
+  train_path: "data/train"
+  val_path: "data/val"
+  test_path: "data/test"
+  train_val_split: 0.8
+  augmentations:
+    - name: "RandomHorizontalFlip"
+      probability: 0.5
+    - name: "RandomVerticalFlip"
+      probability: 0.5
+    - name: "RandomRotation"
+      degrees: 15
+    - name: "RandomBrightness"
+      factor: 0.2
+
+# Output configuration
+output:
+  weights_dir: "weights"
+  logs_dir: "logs"
+  checkpoints_dir: "checkpoints"
+  tensorboard_dir: "runs"
+
+# MLflow configuration
+mlflow:
+  experiment_name: "suture_training"
+  tracking_uri: "http://localhost:5000"
+  registry_uri: "http://localhost:5000"
+  model_name: "suture_detection"
+
+# Monitoring configuration
+monitoring:
+  log_interval: 10  # steps
+  save_interval: 100  # steps
+  eval_interval: 1  # epochs
+  metrics:
+    - "loss"
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score" 

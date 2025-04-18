@@ -1,0 +1,92 @@
+# Model Configuration
+model:
+  name: "yolov8"
+  version: "8.0.0"
+  input_size: [640, 640]
+  num_classes: 3
+  confidence_threshold: 0.25
+  iou_threshold: 0.45
+  device: "cuda"  # or "cpu"
+  weights: "weights/yolov8.pt"
+
+# Training Configuration
+training:
+  epochs: 100
+  batch_size: 16
+  learning_rate: 0.01
+  momentum: 0.937
+  weight_decay: 0.0005
+  warmup_epochs: 3
+  warmup_momentum: 0.8
+  warmup_bias_lr: 0.1
+  box: 7.5
+  cls: 0.5
+  dfl: 1.5
+  close_mosaic: 10
+
+# Data Configuration
+data:
+  train_path: "data/train/images"
+  val_path: "data/val/images"
+  test_path: "data/test/images"
+  cache: false
+  augment: true
+  augment_hsv_h: 0.015
+  augment_hsv_s: 0.7
+  augment_hsv_v: 0.4
+  augment_degrees: 0.0
+  augment_translate: 0.1
+  augment_scale: 0.5
+  augment_shear: 0.0
+  augment_perspective: 0.0
+  augment_flipud: 0.0
+  augment_fliplr: 0.5
+  augment_mosaic: 1.0
+  augment_mixup: 0.0
+
+# Validation Configuration
+validation:
+  interval: 1
+  save_best: true
+  save_period: -1
+  plots: true
+  conf: 0.001
+  iou: 0.6
+  max_det: 300
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/ml.log"
+  tensorboard: true
+  wandb: false
+  mlflow: true
+
+# MLflow Configuration
+mlflow:
+  tracking_uri: "http://mlflow:5000"
+  experiment_name: "suture_analysis"
+  artifact_location: "s3://mlflow"
+
+# MinIO Configuration
+minio:
+  endpoint: "http://minio:9000"
+  access_key: "minioadmin"
+  secret_key: "minioadmin"
+  secure: false
+  bucket_name: "suture-analysis"
+
+# Export Configuration
+export:
+  format: ["onnx", "torchscript"]
+  imgsz: [640, 640]
+  batch: 1
+  device: "cpu"
+  half: false
+  int8: false
+  dynamic: false
+  simplify: false
+  opset: 12
+  workspace: 4
+  nms: true 

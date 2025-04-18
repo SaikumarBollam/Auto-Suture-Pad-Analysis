@@ -1,0 +1,64 @@
+# Training pipeline configuration
+pipeline:
+  model_config: "config/model_config.yaml"
+  checkpoint_frequency: 5  # save checkpoint every N epochs
+  early_stopping:
+    patience: 10
+    min_delta: 0.001
+  learning_rate_scheduler:
+    type: "cosine"  # or "step", "plateau"
+    warmup_epochs: 5
+    min_lr: 0.00001
+  epochs: 100  # Added from Python config
+  batch_size: 16  # Added from Python config
+  learning_rate: 0.001  # Added from Python config
+  weight_decay: 0.0005  # Added from Python config
+  momentum: 0.9  # Added from Python config
+  validation_split: 0.2  # Added from Python config
+
+# Data augmentation configuration
+augmentation:
+  train:
+    random_horizontal_flip: true
+    random_vertical_flip: true
+    random_rotation: 15  # degrees
+    random_brightness: 0.2
+    random_contrast: 0.2
+    random_saturation: 0.2
+    random_hue: 0.1
+  val:
+    random_horizontal_flip: false
+    random_vertical_flip: false
+    random_rotation: 0
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "training.log"
+  tensorboard: true
+
+# Environment-specific overrides
+dev:
+  pipeline:
+    checkpoint_frequency: 2  # More frequent checkpoints in development
+    early_stopping:
+      patience: 5  # Less patience in development
+  logging:
+    level: "DEBUG"  # More verbose logging in development
+
+prod:
+  pipeline:
+    checkpoint_frequency: 5
+    early_stopping:
+      patience: 10
+  logging:
+    level: "INFO"
+
+test:
+  pipeline:
+    checkpoint_frequency: 1  # Checkpoint every epoch in testing
+    early_stopping:
+      patience: 3  # Minimal patience in testing
+  logging:
+    level: "WARNING"  # Less verbose logging in testing 

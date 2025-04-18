@@ -1,0 +1,41 @@
+# Dataset configuration
+dataset:
+  name: "suture_detection"
+  format: "yolo"  # or "coco", "pascal_voc"
+  classes:
+    - "suture"
+  class_ids:
+    suture: 0
+
+# Data loading configuration
+loader:
+  batch_size: 16
+  shuffle: true
+  num_workers: 4
+  pin_memory: true
+  drop_last: false
+  collate_fn: "default"  # or custom collate function
+
+# Data preprocessing configuration
+preprocessing:
+  resize:
+    width: 640
+    height: 640
+    keep_ratio: true
+  normalize:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+  to_tensor: true
+
+# Data paths
+paths:
+  root: "data"
+  train:
+    images: "train/images"
+    labels: "train/labels"
+  val:
+    images: "val/images"
+    labels: "val/labels"
+  test:
+    images: "test/images"
+    labels: "test/labels" 

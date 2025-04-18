@@ -1,0 +1,27 @@
+development:
+  debug: true
+  environment: "development"
+  api_url: "http://localhost:8000"
+  ml_url: "http://localhost:8001"
+  frontend_url: "http://localhost:3000"
+
+production:
+  debug: false
+  environment: "production"
+  api_url: "https://api.suture-analysis.com"
+  ml_url: "https://ml.suture-analysis.com"
+  frontend_url: "https://suture-analysis.com"
+
+services:
+  redis:
+    host: "localhost"
+    port: 6379
+  mlflow:
+    host: "localhost"
+    port: 5000
+  minio:
+    host: "localhost"
+    port: 9000
+    console_port: 9001
+    access_key: "minioadmin"
+    secret_key: "minioadmin" 
