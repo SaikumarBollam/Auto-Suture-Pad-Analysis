@@ -112,8 +112,8 @@ class YOLOv12SutureModel(SutureModel):
             # Extract detections
             detections = []
             for result in results:
-                if result.boxes is not None:
-                    boxes = result.boxes.xyxy  # [N, 4]
+                boxes = result.boxes.xyxy  # [N, 4]
+                if boxes is not None:
                     confs = result.boxes.conf  # [N]
                     classes = result.boxes.cls  # [N]
                     detections.append(torch.cat([boxes, confs.unsqueeze(1), classes.unsqueeze(1)], dim=1))

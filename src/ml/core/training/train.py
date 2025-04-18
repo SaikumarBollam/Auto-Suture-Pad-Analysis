@@ -94,8 +94,13 @@ def train(
         logger.info("Initialized model")
         
         # Set device
-        device = torch.device(config.get_deployment_config()['device'])
-        model.to(device)
+        #device = torch.device(config.get_deployment_config()['device'])
+        #model.to(device)
+        
+        device = torch.device("cpu")
+        if torch.cuda.is_available():
+             device = torch.device("cuda")
+        
         logger.info(f"Using device: {device}")
         
         # Create data configuration

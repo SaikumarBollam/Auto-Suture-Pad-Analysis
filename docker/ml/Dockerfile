@@ -1,5 +1,5 @@
-# Use PyTorch base image with CUDA support
-FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
+# Use PyTorch base image (CPU only)
+FROM pytorch/pytorch:2.0.1-cpu
 
 # Set working directory
 WORKDIR /app
@@ -27,7 +27,6 @@ RUN mkdir -p /app/data /app/weights /app/logs /app/mlruns
 
 # Set environment variables
 ENV PYTHONPATH=/app
-ENV CUDA_VISIBLE_DEVICES=0
 ENV PYTHONUNBUFFERED=1
 
 # Expose necessary ports

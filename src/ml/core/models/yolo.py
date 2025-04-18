@@ -40,6 +40,10 @@ class YOLOModel(BaseModel):
             
         Returns:
             torch.Tensor: Output tensor
+        
+        Note:
+            The forward method of the YOLO class automatically handles device placement
+            of input data. Therefore, no explicit actions are required.
         """
         return self.yolo(x)
         
@@ -55,6 +59,11 @@ class YOLOModel(BaseModel):
         """
         # Update prediction parameters
         predict_config = self.config.get('validation', {})
+        # Set device to CPU explicitly
+        predict_config['device'] = 'cpu'  
+        # Set verbose to False to suppress detailed output
+        predict_config['verbose'] = False  
+
         predict_config.update(kwargs)
         
         # Make predictions
@@ -63,11 +72,11 @@ class YOLOModel(BaseModel):
         # Process results
         predictions = []
         for result in results:
-            prediction = {
-                'boxes': result.boxes.xyxy.cpu().numpy(),
-                'scores': result.boxes.conf.cpu().numpy(),
-                'labels': result.boxes.cls.cpu().numpy()
-            }
+            prediction = {  # Directly access the attributes without moving to CPU
+                'boxes': result.boxes.xyxy.numpy(),
+                'scores': result.boxes.conf.numpy(),
+                'labels': result.boxes.cls.numpy()
+            }  
             predictions.append(prediction)
             
         return {'predictions': predictions}

@@ -64,7 +64,7 @@ class SutureDetector:
                 raise RuntimeError(f"Failed to load model weights from {model_path}: {str(e)}")
             
         # Set device
-        self.device = torch.device(self.config.get_deployment_config()['device'])
+        self.device = torch.device('cpu') # use cpu
         self.model.to(self.device)
         self.model.eval()
         
@@ -113,7 +113,8 @@ class SutureDetector:
         # Convert to tensor and add batch dimension
         image = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(0)
         
-        return image.to(self.device)
+        #return image.to(self.device) #removed device
+        return image
         
     def postprocess(
         self,

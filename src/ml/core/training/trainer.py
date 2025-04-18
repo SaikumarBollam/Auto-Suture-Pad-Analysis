@@ -14,7 +14,7 @@ class SutureTrainer:
     def __init__(self,
                  model_type: str = "yolo",
                  model_kwargs: Optional[Dict[str, Any]] = None,
-                 device: str = "cuda" if torch.cuda.is_available() else "cpu"):
+                 device: str = "cpu"):
         """Initialize the suture trainer.
         
         Args:
@@ -24,7 +24,7 @@ class SutureTrainer:
         """
         self.device = device
         self.model = get_model(model_type, **(model_kwargs or {}))
-        self.model.to(device)
+        self.model.to(self.device)
         
         # Initialize MLflow
         mlflow.set_tracking_uri("file:./mlruns")
@@ -90,8 +90,8 @@ class SutureTrainer:
                 train_total = 0
                 
                 for inputs, targets in train_loader:
-                    inputs, targets = inputs.to(self.device), targets.to(self.device)
-                    
+                    #inputs, targets = inputs.to(self.device), targets.to(self.device)
+                                        
                     optimizer.zero_grad()
                     outputs = self.model(inputs)
                     loss = criterion(outputs, targets)
@@ -114,7 +114,7 @@ class SutureTrainer:
                 
                 with torch.no_grad():
                     for inputs, targets in val_loader:
-                        inputs, targets = inputs.to(self.device), targets.to(self.device)
+                        #inputs, targets = inputs.to(self.device), targets.to(self.device)
                         outputs = self.model(inputs)
                         loss = criterion(outputs, targets)
                         
@@ -188,7 +188,7 @@ class SutureTrainer:
             
             # Create new model with suggested hyperparameters
             model = get_model(type(self.model).__name__.lower())
-            model.to(self.device)
+            #model.to(self.device)
             
             # Train model
             metrics = self.train(
