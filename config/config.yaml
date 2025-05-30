@@ -1,138 +1,240 @@
+analysis:
+  incision_classes:
+  - incision
+  knot_classes:
+  - knot_good
+  - knot_loose
+  - knot_tight
+  - knot_perfect
+  quality_thresholds:
+    angle_deviation_max: 15.0
+    length_variation_max: 1.5
+    spacing_variation_max: 2.0
+  suture_classes:
+  - suture_good
+  - suture_loose
+  - suture_tight
+  - suture_perfect
 api:
-  host: "0.0.0.0"
-  port: 8000
-  debug: false
   allowed_origins:
-    - "http://localhost:3000"
-    - "http://localhost:8080"
+  - http://localhost:3000
+  - http://localhost:8080
   cors:
-    allowed_origins: ['http://localhost:3000', 'http://localhost:8080']
     allow_credentials: true
+    allowed_origins:
+    - http://localhost:3000
+    - http://localhost:8080
+  debug: false
+  host: 0.0.0.0
+  port: 8000
   validation:
-    max_image_size: 4096  # Maximum image dimension in pixels
-    supported_formats: ['jpg', 'jpeg', 'png']
-    max_file_size: 10485760  # 10MB in bytes
-
+    max_file_size: 10485760
+    max_image_size: 4096
+    supported_formats:
+    - jpg
+    - jpeg
+    - png
+augmentation:
+  brightness: 0.2
+  contrast: 0.2
+  flip: true
+  resize:
+  - 640
+  - 640
+  rotate: 15
+  scale: 0.1
+  shear: 10
+  translate: 0.1
+cache:
+  redis:
+    db: 0
+    expiration_seconds: 3600
+    host: localhost
+    port: 6379
+data:
+  class_names:
+  - suture
+  - needle
+  format: images
+  num_classes: 2
+  test_dir: data/test
+  train_dir: data/train
+  val_dir: data/val
+deployment:
+  fastapi:
+    host: 0.0.0.0
+    port: 8000
+    reload: true
+  uvicorn:
+    log_level: info
+    workers: 2
+formatting:
+  enable_black: true
+  line_length: 88
+inference:
+  confidence_threshold: 0.25
+  device: cuda
+  iou_threshold: 0.45
+  max_detections: 100
+linting:
+  disable_rules:
+  - C0114
+  - C0116
+  enable_pylint: true
+logging:
+  experiment_name: suture_analysis
+  level: INFO
+  log_artifacts: true
+  log_metrics: true
+  save_images: true
+  save_measurements: true
+  save_path: logs/
+  tracking_uri: http://localhost:5000
+  use_mlflow: true
+measurements:
+  angle_tolerance: 5.0
+  pixel_mm_calibration:
+    enabled: true
+    reference_points:
+    - - 0.22995
+      - 0.5814
+    - - 0.22428
+      - 0.30907
+  reference_distance_mm: 10.0
+  spacing_tolerance_mm: 1.0
 ml:
   model:
-    name: "yolov8"
-    weights: "weights/yolov8n.pt"
-    confidence_threshold: 0.4  # Lowered for better recall
-    device: "cuda"  # or "cpu"
-    nms_iou_threshold: 0.35  # Adjusted for better box separation
+    confidence_threshold: 0.4
+    device: cuda
+    ensemble_inference: true
+    error_logging: true
+    name: yolov8
+    nms_iou_threshold: 0.35
     test_time_augmentation: true
-    ensemble_inference: true  # Enable model ensemble
-    error_logging: true  # Log errors during inference
-  
+    weights: weights/yolov8n.pt
   preprocessing:
-    image_size: [640, 640]
-    batch_size: 16
-    normalize: true
-    clahe:
-      enabled: true
-      clip_limit: 2.5  # Increased for better contrast
-      tile_grid_size: [8, 8]
-    bilateral_filter:
-      enabled: true
-      d: 7  # Reduced for finer detail preservation
-      sigma_color: 65
-      sigma_space: 65
     augmentation:
+      blur:
+        enabled: true
+        kernel_size:
+        - 3
+        - 3
+      brightness_range:
+      - 0.7
+      - 1.3
+      contrast_range:
+      - 0.7
+      - 1.3
       enabled: true
-      rotation_range: [-20, 20]  # Increased rotation range
-      zoom_range: [0.8, 1.2]  # Increased zoom range
       horizontal_flip: true
-      vertical_flip: false
-      brightness_range: [0.7, 1.3]  # Increased brightness range
-      contrast_range: [0.7, 1.3]
+      mixup:
+        enabled: true
+        prob: 0.3
+      mosaic:
+        enabled: true
+        prob: 0.5
       noise:
         gaussian:
           enabled: true
           mean: 0
-          std: 0.015  # Increased for more robustness
-      blur:
-        enabled: true
-        kernel_size: [3, 3]
-      mosaic: 
-        enabled: true
-        prob: 0.5
-      mixup:
-        enabled: true
-        prob: 0.3
-    
+          std: 0.015
+      rotation_range:
+      - -20
+      - 20
+      vertical_flip: false
+      zoom_range:
+      - 0.8
+      - 1.2
+    batch_size: 16
+    bilateral_filter:
+      d: 7
+      enabled: true
+      sigma_color: 65
+      sigma_space: 65
+    clahe:
+      clip_limit: 2.5
+      enabled: true
+      tile_grid_size:
+      - 8
+      - 8
+    image_size:
+    - 640
+    - 640
+    normalize: true
   training:
     epochs: 300
-    patience: 50
     learning_rate:
       initial: 0.001
-      scheduler: "cosine"
-      warmup_epochs: 5  # Increased warmup
       min_lr: 1e-6
-    optimizer:
-      name: "AdamW"
-      weight_decay: 0.0005  # Increased regularization
-      momentum: 0.937
-      nesterov: true
+      scheduler: cosine
+      warmup_epochs: 5
     loss:
       box_loss_weight: 1.0
-      cls_loss_weight: 0.5  # Adjusted for better balance
-      obj_loss_weight: 1.0
+      cls_loss_weight: 0.5
       focal_loss_gamma: 2.0
-      giou_loss_weight: 1.0  # Added GIoU loss
-
+      giou_loss_weight: 1.0
+      obj_loss_weight: 1.0
+    optimizer:
+      momentum: 0.937
+      name: AdamW
+      nesterov: true
+      weight_decay: 0.0005
+    patience: 50
+mlflow:
+  experiment_name: suture-analysis
+  tracking_uri: http://localhost:5000
+model:
+  batch_size: 16
+  epochs: 100
+  framework: torch
+  input_size: 640
+  learning_rate: 0.001
+  name: yolov8n
+  optimizer: adam
+  pretrained: true
+  scheduler:
+    gamma: 0.1
+    step_size: 10
+    type: step
+  weight_decay: 0.0005
+redis:
+  db: 0
+  host: localhost
+  port: 6379
 storage:
   minio:
-    endpoint: "localhost:9000"
-    access_key: "${MINIO_ACCESS_KEY}"
-    secret_key: "${MINIO_SECRET_KEY}"
-    bucket_name: "models"
+    access_key: ${MINIO_ACCESS_KEY}
+    bucket_name: models
+    endpoint: localhost:9000
+    secret_key: ${MINIO_SECRET_KEY}
     secure: false
-
-redis:
-  host: "localhost"
-  port: 6379
-  db: 0
-  
-mlflow:
-  tracking_uri: "http://localhost:5000"
-  experiment_name: "suture-analysis"
-
-# Measurement Settings
-measurements:
-  reference_distance_mm: 10.0  # Standard reference distance in mm
-  angle_tolerance: 5.0  # Degrees
-  spacing_tolerance_mm: 1.0
-  pixel_mm_calibration:
-    enabled: true
-    reference_points:
-      - [0.22995, 0.5814]
-      - [0.22428, 0.30907]
-
-# Analysis Parameters
-analysis:
-  suture_classes: ["suture_good", "suture_loose", "suture_tight", "suture_perfect"]
-  knot_classes: ["knot_good", "knot_loose", "knot_tight", "knot_perfect"]
-  incision_classes: ["incision"]
-  quality_thresholds:
-    angle_deviation_max: 15.0
-    spacing_variation_max: 2.0
-    length_variation_max: 1.5
-
-# Visualization
+  use_minio: true
+tests:
+  enable: true
+  framework: pytest
+  test_dir: tests
 visualization:
   colors:
-    suture: [0, 255, 0]    # BGR Green
-    knot: [255, 0, 0]      # BGR Blue
-    incision: [0, 0, 255]  # BGR Red
-    tail: [255, 255, 0]    # BGR Cyan
-  show_scores: true
-  show_labels: true
-  line_thickness: 2
+    incision:
+    - 0
+    - 0
+    - 255
+    knot:
+    - 255
+    - 0
+    - 0
+    suture:
+    - 0
+    - 255
+    - 0
+    tail:
+    - 255
+    - 255
+    - 0
+  enable: true
   font_scale: 0.5
-
-# Logging
-logging:
-  level: INFO
-  save_path: logs/
-  save_images: true
-  save_measurements: true
+  line_thickness: 2
+  plot_format: png
+  save_dir: outputs/
+  show_labels: true
+  show_scores: true
